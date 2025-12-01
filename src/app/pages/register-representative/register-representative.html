@@ -1,0 +1,62 @@
+<div class="login-page">
+  <div class="login-card">
+    <h1>Créer un utilisateur</h1>
+    <p>
+      Vous êtes le représentant d'une personne souhaitant prendre rendez-vous avec un maître-nageur,
+      que ce soit pour vous-même ou pour les personnes que vous représentez.
+    </p>
+
+    <form [formGroup]="registerRepresentativeForm" (ngSubmit)="submit()">
+
+      <div class="field">
+        <label for="firstName">Prénom :</label>
+        <input id="firstName" name="firstName" type="text" formControlName="firstName">
+        @if (registerRepresentativeForm.get("firstName")?.invalid && registerRepresentativeForm.get('firstName')?.touched) {
+          <div class="error">Votre prénom ne peut être vide</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="lastName">Nom de famille :</label>
+        <input id="lastName" name="lastName" type="text" formControlName="lastName">
+        @if (registerRepresentativeForm.get("lastName")?.invalid && registerRepresentativeForm.get('lastName')?.touched) {
+          <div class="error">Votre nom ne peut être vide</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="birthDate">Date de naissance :</label>
+        <input id="birthDate" name="birthDate" type="date" formControlName="birthDate">
+        @if (registerRepresentativeForm.get("birthDate")?.invalid && registerRepresentativeForm.get('birthDate')?.touched) {
+          <div class="error">Vous devez avoir plus de 18 ans pour créer un compte</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="email">Email :</label>
+        <input id="email" name="email" type="email" formControlName="email">
+        @if (registerRepresentativeForm.get("email")?.invalid && registerRepresentativeForm.get('email')?.touched) {
+          <div class="error">Votre adresse email doit être valide</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe :</label>
+        <input id="password" name="password" type="password" formControlName="password">
+        @if (registerRepresentativeForm.get("password")?.invalid && registerRepresentativeForm.get('password')?.touched) {
+          <div class="error">Votre mot de passe doit comporter au moins un chiffre et un caractère spécial</div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirmez votre mot de passe :</label>
+        <input id="confirmPassword" name="confirmPassword" type="password" formControlName="confirmPassword">
+        @if (registerRepresentativeForm.hasError('passwordMismatch') && registerRepresentativeForm.get('confirmPassword')?.touched) {
+          <div class="error">Les mots de passe ne correspondent pas</div>
+        }
+      </div>
+
+      <button type="submit" [disabled]="registerRepresentativeForm.invalid">Créer un compte</button>
+    </form>
+  </div>
+</div>

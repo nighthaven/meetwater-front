@@ -1,9 +1,28 @@
-<form [formGroup]="loginForm" (ngSubmit)="submit()">
-  <input type="email" formControlName="email">
-  <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">Email invalide</div>
+<div class="login-page">
+  <div class="login-card">
+    <h2>Connexion</h2>
 
-  <input type="password" formControlName="password">
-  <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">Mot de passe requis</div>
+    <form [formGroup]="loginForm" (ngSubmit)="submit()">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" formControlName="email">
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <div class="error">Email invalide</div>
+        }
+      </div>
 
-  <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
-</form>
+      <div class="field">
+        <label>Mot de passe</label>
+        <input type="password" formControlName="password">
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <div class="error">Mot de passe requis</div>
+        }
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
+    </form>
+    <p>pas de compte utilisateur? <a href="http://localhost:4200/create-user">Créer un compte utilisateur ici</a></p>
+    <p>Vous êtes maitre nageur? demandez à votre chef de bassin de vous créer un compte maitre nageur.</p>
+
+  </div>
+</div>
