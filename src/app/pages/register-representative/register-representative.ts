@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { minimumAgeValidator, passwordMatchValidator} from './validators';
+import {minimumAgeValidator, passwordMatchValidator, passwordPatternValidator} from './validators';
 
 
 @Component({
@@ -28,9 +28,9 @@ export class RegisterRepresentative {
       lastName: ['', Validators.required],
       birthDate: ['', [Validators.required, minimumAgeValidator(18)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required, passwordMatchValidator],
-    });
+      raw_password: ['', [Validators.required, passwordPatternValidator]],
+      confirmPassword: ['', Validators.required]
+    }, { validators: passwordMatchValidator });
   }
 
   submit() {
@@ -40,20 +40,19 @@ export class RegisterRepresentative {
     }
 
     const values = this.registerRepresentativeForm.value;
-
     const payload = {
       first_name: values.firstName,
       last_name: values.lastName,
-      birth_date: values.birthDate,
+      birth_date: new Date(values.birthDate!).toISOString().split('T')[0],
       email: values.email,
-      password: values.password
+      raw_password: values.raw_password
     };
 
-    this.http.post('http://localhost:8000/representatives', payload)
+    this.http.post('http://localhost:8000/representatives/', payload)
       .subscribe({
         next: res => {
           console.log('Success:', res);
-          this.router.navigate(['/success-page']);
+          this.router.navigate(['/login']);
         },
         error: err => console.error('Error:', err)
       });

@@ -42,8 +42,8 @@
 
       <div class="field">
         <label for="password">Mot de passe :</label>
-        <input id="password" name="password" type="password" formControlName="password">
-        @if (registerRepresentativeForm.get("password")?.invalid && registerRepresentativeForm.get('password')?.touched) {
+        <input id="password" name="password" type="password" formControlName="raw_password">
+        @if (registerRepresentativeForm.get("raw_password")?.invalid && registerRepresentativeForm.get('raw_password')?.touched) {
           <div class="error">Votre mot de passe doit comporter au moins un chiffre et un caractère spécial</div>
         }
       </div>
