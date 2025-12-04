@@ -1,0 +1,90 @@
+/* ---- LAYOUT GLOBAL ---- */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #f6f9fc;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  width: 280px;
+  background: linear-gradient(
+      135deg,
+      #0a3d62 0%,
+      #1e6091 50%,
+      #98c1d9 100%
+  );
+  color: white;
+  padding: 20px;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+
+  h4 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      backdrop-filter: blur(5px);
+      transition: 0.2s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.25);
+        cursor: pointer;
+      }
+    }
+  }
+
+  p {
+    opacity: 0.8;
+    font-size: 14px;
+  }
+}
+
+/* ---- CONTENU PRINCIPAL ---- */
+.main-area {
+  flex: 1;
+  padding: 25px 35px;
+  overflow-y: auto;
+}
+
+/* Titre */
+.dashboard-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0a3d62;
+  margin-bottom: 20px;
+}
+
+/* Carte contenant le calendrier */
+.calendar-card {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
+}
+
+/* FullCalendar fix */
+full-calendar {
+  display: block;
+  width: 100%;
+}
+
+/* Zone de texte sous le calendrier */
+.main-content {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}

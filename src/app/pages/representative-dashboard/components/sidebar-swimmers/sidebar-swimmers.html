@@ -1,0 +1,19 @@
+@if (swimmers$ | async; as swimmers) {
+
+  <ul>
+    @for (swimmer of swimmers; track $index) {
+      <li>
+        {{ swimmer.first_name }} {{ swimmer.last_name }} —
+        {{ swimmer.level }} —
+        Né le {{ swimmer.birth_date }}
+      </li>
+    }
+  </ul>
+
+  @if (swimmers.length === 0) {
+    <p>Aucun nageur disponible.</p>
+  }
+
+} @else {
+  loading...
+}

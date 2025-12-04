@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CreateRepresentative } from './services/create-representative/create-representative';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {minimumAgeValidator, passwordMatchValidator, passwordPatternValidator} from './validators';
+import { RepresentativeForm } from './models/representative-form.model';
 
 
 @Component({
   selector: 'app-register-representative',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register-representative.html',
   styleUrls: ['./register-representative.scss'],
 })
@@ -19,7 +20,7 @@ export class RegisterRepresentative {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
+    private createRepService: CreateRepresentative,
     private router: Router
   ) {
 
@@ -30,7 +31,7 @@ export class RegisterRepresentative {
       email: ['', [Validators.required, Validators.email]],
       raw_password: ['', [Validators.required, passwordPatternValidator]],
       confirmPassword: ['', Validators.required]
-    }, { validators: passwordMatchValidator });
+    }, {validators: passwordMatchValidator});
   }
 
   submit() {
@@ -40,21 +41,21 @@ export class RegisterRepresentative {
     }
 
     const values = this.registerRepresentativeForm.value;
-    const payload = {
-      first_name: values.firstName,
-      last_name: values.lastName,
-      birth_date: new Date(values.birthDate!).toISOString().split('T')[0],
-      email: values.email,
-      raw_password: values.raw_password
+
+    const representative: RepresentativeForm = {
+      firstName: values.firstName!,
+      lastName: values.lastName!,
+      birthDate: new Date(values.birthDate!),
+      email: values.email!,
+      password: values.raw_password!
     };
 
-    this.http.post('http://localhost:8000/representatives/', payload)
-      .subscribe({
-        next: res => {
-          console.log('Success:', res);
-          this.router.navigate(['/login']);
-        },
-        error: err => console.error('Error:', err)
-      });
+    this.createRepService.createRepresentative(representative).subscribe({
+      next: response => {
+        console.log('Success:', response);
+        this.router.navigate(['/login']);
+      },
+      error: error => console.error('Error:', error)
+    });
   }
 }
