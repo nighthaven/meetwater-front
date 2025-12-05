@@ -1,4 +1,5 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, NgZone, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -12,6 +13,7 @@ import {EventClickArg} from '@fullcalendar/core';
   standalone: true,
   templateUrl: './calendar.html',
   styleUrl: './calendar.scss',
+  imports: [CommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class Calendar {
@@ -23,8 +25,13 @@ export class Calendar {
     events: [],
     eventClick: this.handleEventClick.bind(this),
   };
+  selectedBooking: Booking | null = null;
 
-  constructor(private getBookingsService: GetBookings) {}
+  constructor(
+    private getBookingsService: GetBookings,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.loadBookings();
@@ -60,7 +67,20 @@ export class Calendar {
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-    const booking: Booking = clickInfo.event.extendedProps['booking'];
-    alert(`Booking Details:\nSwimmers: ${booking.swimmers.map(s => s.first_name + ' ' + s.last_name).join(', ')}\nStatus: ${booking.status}`);
+    this.ngZone.run(() => {
+      this.selectedBooking = clickInfo.event.extendedProps['booking'];
+      console.log('SELECTED BOOKING = ', this.selectedBooking);
+      this.cdr.detectChanges();
+    });
   }
+
+  closePanel() {
+    this.selectedBooking = null;
+  }
+
+  cancelBooking(booking: Booking) {
+    console.log('Annuler booking', booking.id);
+    this.closePanel();
+  }
+
 }

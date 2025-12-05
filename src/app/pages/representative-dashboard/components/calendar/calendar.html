@@ -1,1 +1,11 @@
 <full-calendar [options]="calendarOptions"></full-calendar>
+
+
+@if (selectedBooking) {
+  <div class="booking-panel" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closePanel()">×</button>
+    <h2>Booking Details</h2>
+    <p>Status: {{ selectedBooking!.status }}</p>
+    <button (click)="cancelBooking(selectedBooking!)">Annuler</button>
+  </div>
+}
