@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {Subdomain} from '../subdomain/subdomain';
 
 @Injectable({
   providedIn: 'root',
@@ -8,15 +9,22 @@ import { Observable } from 'rxjs';
 export class Auth {
   private apiUrl = 'http://localhost:8000';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private subdomain: Subdomain,
+    ) {}
 
   login(email: string, password: string): Observable<any> {
+    const subdomain = this.subdomain.getCurrentSubdomain();
     const body = new URLSearchParams();
     body.set('username', email);
     body.set('password', password);
 
     return this.http.post(`${this.apiUrl}/login`, body.toString(), {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'subdomain': subdomain,
+      },
     });
   }
 
